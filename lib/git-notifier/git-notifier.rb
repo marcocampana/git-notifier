@@ -1,35 +1,75 @@
 #!/usr/bin/env ruby
+# == Synopsis
+#   This is a sample description of the application.
+#   Blah blah blah.
+#
+# == Examples
+#   This command does blah blah blah.
+#     ruby_cl_skeleton foo.txt
+#
+#   Other examples:
+#     ruby_cl_skeleton -q bar.doc
+#     ruby_cl_skeleton --verbose foo.html
+#
+# == Usage
+#   git-notifier start uri
+#
+#
+# == Options
+#   -h, --help          Displays help message
+#   -v, --version       Display the version, then exit
+#   -q, --quiet         Output as little as possible, overrides verbose
+#   -V, --verbose       Verbose output
+#   TO DO - add additional options
+#
+# == Author
+#   Marco Campana <m.campana@gmail.com>
+#
+# == Copyright
+#   Copyright (c) 2009 Marco Campana. Licensed under the MIT License:
+#   http://www.opensource.org/licenses/mit-license.php
 
-# TODO 
+# TODO
 # 1) Error handling with notifications
-# 2) demonization
-# 3) Create gem
 # 4) check dependencies at startup
+# 5) complete help() above
 
 require 'rubygems'
 require 'daemons'
 require 'ruby-growl'
 require 'digest/sha1'
+require 'rdoc/usage'
 
 # TODO remove this
 require 'ruby-debug'
 
 # Initialize the app while we're not a daemon
 def init()
-  uri   = ARGV[1]
-  @@branch = ARGV[2] || 'master'
+  repo_uri    = ARGV[1]
+  @@branch    = ARGV[2] || 'master'
+  @@repo_path = "/var/tmp/git_#{Digest::SHA1.hexdigest(repo_uri)}_#{@@branch}"
 
-  @@repo_path = "/var/tmp/git_#{Digest::SHA1.hexdigest(uri)}_#{@@branch}"
   if !File.exists?( @@repo_path )
-    puts "Cloning repo to watch..."
+    puts "Starting up notifier... (this might take a while)"
     `mkdir #{@@repo_path}; cd #{@@repo_path}; git clone #{uri} .`
   end
+  puts "git-notifier is now active"
+rescue
+  RDoc::usage('usage')
 end
 
-init()
+def stop()
+  puts "git-notifier is now stopped"
+end
 
-# TODO When creating the gem, change the pid directory to pids/
-Daemons.run_proc('git_notifier', :dir_mode => :normal, :dir => '/var/tmp' ) do
+def clear()
+end
+
+init() if ARGV[0] == 'start'
+stop() if ARGV[0] == 'stop'
+clear() if ARGV[0] == 'clear'
+
+Daemons.run_proc('git_notifier', :dir_mode => :normal, :dir => 'pids/' ) do
   g = Growl.new "localhost", "ruby-growl", ["git_notifier"]
   g.notify "git_notifier", "GIT Notifier", "Start watching\nrepo: #{ARGV[0]}\nbranch: #{@@branch}"
 
