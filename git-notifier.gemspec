@@ -9,13 +9,14 @@ Gem::Specification.new do |s|
   s.date = %q{2009-10-13}
   s.description = %q{ git-notifier is a gem that allows you to watch one or more git repositories and receive a growl notification when a change is committed}
   s.email = %q{m.campana@gmail.com}
-  s.has_rdoc = true
+  s.executables = ["git-notifier"]
   s.homepage = %q{http://github.com/marcocampana/git-notifier}
-  s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
-  s.require_paths = ["lib"]
-  # s.rubyforge_project = %q{git-notifier}
-  # s.rubygems_version = %q{1.3.3}
-  # s.summary = %q{ SUMMARY HERE }
+  # s.has_rdoc = false
+  # s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
+  # s.require_paths = ["lib"]
+  s.rubyforge_project = %q{git-notifier}
+  s.rubygems_version = %q{1.3.1}
+  s.summary = %q{ git-notifier is a gem that allows you to watch one or more git repositories and receive a growl notification when a change is committed }
 
   # if s.respond_to? :specification_version then
   #   current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION

@@ -1,0 +1,48 @@
+== git-notifier
+
+git-notifier is a gem that allows you to watch one or more git repositories and receive a growl notification when a change is committed
+
+== Usage
+
+Usage: git-notifier start|stop|add|clear|status
+
+Start the notifier:
+  git-notifier start
+
+Stop the notifier:
+  git-notifier stop
+
+Add a repository to the watch list:
+  git-notifier add <repo_uri> <branch>
+  Example: git-notifier add git@github.com:marcocampana/git-notifier.git master
+
+Remove all watched repositories from the watch list
+  git-notifier clear
+
+Show all the watched repositories
+  git-notifier status
+
+== Install
+
+From github:
+
+  gem sources -a http://gems.github.com
+  sudo gem install marcocampana-git-notifier
+
+== Warning
+
+To appear
+
+== Author
+
+Marco Campana <m.campana@gmail.com>
+http://xterm.it/blog
+
+== LICENSE:
+
+Released under the same license as Ruby. No Support. No Warranty.
+
+== Copyright
+
+Copyright (c) 2009 Marco Campana. Licensed under the MIT License:
+http://www.opensource.org/licenses/mit-license.php

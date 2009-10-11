@@ -1,35 +1,4 @@
 #!/usr/bin/env ruby
-# == Synopsis
-#   This is a sample description of the application.
-#   Blah blah blah.
-#
-# == Usage
-#   git-notifier start|stop|add|clear|status
-#
-#   Start the notifier:
-#     git-notifier start
-# 
-#   Stop the notifier:
-#     git-notifier stop
-#
-#   Add a repository to the watch list:
-#     git-notifier add <repo_uri> <branch>
-#     Example: git-notifier add git@github.com:marcocampana/git-notifier.git master
-# 
-#   Remove all watched repositories from the watch list
-#     git-notifier clear
-# 
-#   Show all the watched repositories
-#     git-notifier status
-# 
-# == Author
-#   Marco Campana <m.campana@gmail.com>
-#   http://xterm.it/blog
-#
-# == Copyright
-#   Copyright (c) 2009 Marco Campana. Licensed under the MIT License:
-#   http://www.opensource.org/licenses/mit-license.php
-
 # TODO
 # 1) Error handling with notifications
 # 4) check dependencies at startup
@@ -39,13 +8,39 @@ require 'rubygems'
 require 'daemons'
 require 'ruby-growl'
 require 'digest/sha1'
-require 'rdoc/usage'
 
-# TODO remove this
-require 'ruby-debug'
+def usage 
+  usage = <<END
+
+  Usage: 
+  ------
+
+  git-notifier start|stop|add|clear|status
+
+
+  Examples:
+  ---------
+
+  Start the notifier:
+    git-notifier start
+
+  Stop the notifier:
+    git-notifier stop
+
+  Add a repository to the watch list:
+    git-notifier add <repo_uri> <branch>
+    Example: git-notifier add git@github.com:marcocampana/git-notifier.git master
+
+  Remove all watched repositories from the watch list
+    git-notifier clear
+
+  Show all the watched repositories
+    git-notifier status
+END
+end
 
 def add_repo
-  (RDoc::usage('usage') and return) if ARGV.size < 2
+  (puts usage and return) if ARGV.size < 2
   repo_uri        = ARGV[1]
   branch          = ARGV[2] || 'master'
   repo_name       = repo_uri.split("/").last
@@ -89,7 +84,7 @@ end
 def available_repos
   repos = []
   Dir.new('/var/tmp').each do |repo_dir|
-    repos << repo_dir if repo_dir =~ /^git-notifier/ 
+    repos << repo_dir if repo_dir =~ /^git-notifier_/
   end
   repos
 end
@@ -104,7 +99,7 @@ def clear_all
 end
 
 def demonize
-  Daemons.run_proc('git-notifier', :dir_mode => :normal, :dir => 'pids/', :monitor => false) do
+  Daemons.run_proc('git-notifier', :dir_mode => :normal, :dir => '/var/tmp/', :monitor => false) do
     g = Growl.new "localhost", "ruby-growl", ["git-notifier"]
     # g.notify "git-notifier", "GIT Notifier", "Start watching\nrepo: #{ARGV[0]}\nbranch: #{@@branch}"
     g.notify "git-notifier", "GIT Notifier", "Start notifier"
@@ -113,7 +108,7 @@ def demonize
       # TODO store available_repoes in a variable if adding while running doesn't work
       available_repos.each do |repo_dirname|
         prefix, repo_sha1, repo_name, repo_branch = repo_dirname.split('_')
-        
+
         git_pull_output = `cd /var/tmp/#{repo_dirname}; git checkout -b #{repo_branch} >/dev/null 2>&1; git pull origin #{repo_branch} 2>/dev/null`
 
         if git_pull_output =~ /Updating (.+)\.\.(.+)/
@@ -150,6 +145,6 @@ case ARGV[0]
   when 'status'
     status
   else
-    RDoc::usage('usage')
+    puts usage
 end
 
