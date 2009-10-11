@@ -36,7 +36,7 @@ To appear
 == Author
 
 Marco Campana <m.campana@gmail.com>
-http://xterm.it/blog
+website: http://xterm.it/
 
 == LICENSE:
 
@@ -44,5 +44,4 @@ Released under the same license as Ruby. No Support. No Warranty.
 
 == Copyright
 
-Copyright (c) 2009 Marco Campana. Licensed under the MIT License:
-http://www.opensource.org/licenses/mit-license.php
+Copyright (c) 2009 Marco Campana.
