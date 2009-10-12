@@ -26,8 +26,11 @@ Show all the watched repositories
 
 From github:
 
-  gem sources -a http://gems.github.com
-  sudo gem install marcocampana-git-notifier
+  sudo gem install marcocampana-git-notifier --source http://gems.github.com
+
+  or
+
+  sudo gem install git-notifier --source http://gemcutter.org
 
 == Warning
 
