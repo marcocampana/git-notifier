@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+
 # TODO
 # 1) Error handling with notifications
 # 4) check dependencies at startup
@@ -102,7 +103,8 @@ def demonize
   Daemons.run_proc('git-notifier', :dir_mode => :normal, :dir => '/var/tmp/', :monitor => false) do
     g = Growl.new "localhost", "ruby-growl", ["git-notifier"]
     # g.notify "git-notifier", "GIT Notifier", "Start watching\nrepo: #{ARGV[0]}\nbranch: #{@@branch}"
-    g.notify "git-notifier", "GIT Notifier", "Start notifier"
+    # TODO this welcome message needs to be prettier
+    g.notify("git-notifier", "GIT Notifier", "Start notifier")
 
     loop do
       # TODO store available_repoes in a variable if adding while running doesn't work
@@ -119,15 +121,16 @@ def demonize
 
           notification_lines = git_log_output.split( "\n" )
           sha1 = notification_lines[0]
-          author = notification_lines[1]
+          author = notification_lines[1] #FIXME when merging the second line is 'Merge: fe3f3' and Author is the third line
           date = notification_lines[2]
           body = notification_lines[3 .. notification_lines.size - 1].to_s.gsub( /\t/, '')
           # TODO truncate commit sha1 and author name stripping off email
 
-          g.notify "git-notifier", sha1 + date, author + "\n" + body
+          # TODO put the name of the repo as title
+          g.notify("git-notifier", sha1 + date, author + "\n" + body, 0, true)
         end
         # TODO increase sleep time
-        sleep( 60 )
+        sleep(60)
       end
     end
   end

@@ -1,6 +1,6 @@
 == git-notifier
 
-git-notifier is a gem that allows you to watch one or more git repositories and receive a growl notification when a change is committed
+git-notifier is a gem for Mac Os that allows you to watch one or more git repositories and receive a growl notification when a change is committed
 
 == Usage
 
@@ -16,19 +16,13 @@ Add a repository to the watch list:
   git-notifier add <repo_uri> <branch>
   Example: git-notifier add git@github.com:marcocampana/git-notifier.git master
 
-Remove all watched repositories from the watch list
+Remove all watched repositories from the watch list:
   git-notifier clear
 
-Show all the watched repositories
+Show all the watched repositories:
   git-notifier status
 
 == Install
-
-From github:
-
-  sudo gem install marcocampana-git-notifier --source http://gems.github.com
-
-  or
 
   sudo gem install git-notifier --source http://gemcutter.org
 
