@@ -102,8 +102,8 @@ end
 def demonize
   Daemons.run_proc('git-notifier', :dir_mode => :normal, :dir => '/var/tmp/', :monitor => false) do
     g = Growl.new "localhost", "ruby-growl", ["git-notifier"]
-    # g.notify "git-notifier", "GIT Notifier", "Start watching\nrepo: #{ARGV[0]}\nbranch: #{@@branch}"
-    # TODO this welcome message needs to be prettier
+
+    # TODO this welcome message needs to be prettier like number of watched repositories for instance
     g.notify("git-notifier", "GIT Notifier", "Start notifier")
 
     loop do
